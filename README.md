@@ -1,3 +1,5 @@
+!!! This project is WIP. See here for more: https://github.com/epinio/epinio/issues/441
+
 # README
 
 This is a sample Ruby on Rails application that can be deployed on Kubernetes
