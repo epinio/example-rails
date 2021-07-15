@@ -1,5 +1,3 @@
-!!! This project is WIP. See here for more: https://github.com/epinio/epinio/issues/441
-
 # README
 
 This is a sample Ruby on Rails application that can be deployed on Kubernetes
@@ -7,35 +5,27 @@ using [Epinio](https://github.com/epinio/epinio/).
 
 ## Preparation
 
-This repository was created following these steps:
-
-1. Create a new Rails application:
+1. Create the encrypted credentials file
 
 ```
-$ rails new epinio-rails-sample
-$ cd epinio-rails-sample
+$ EDITOR=vi rails credentials:edit
 ```
 
-2. Create the encrypted credentials file for the "production" environment
+The contents of the opened file should look something like this:
 
 ```
-$ rails credentials:edit --environment production
+secret_key_base: e01281a074dd079e27024412060e8ed5366d1b34a438d07042c1bd325da9459180ac0f1d365e654a7d8695d7b610fc1cee359d254d147283e3bee364bb668646
 ```
 
-3. Put the generated `config/credentials/production.key` value in the
-RAILS_MASTER_KEY environment variable
+Save and exit the file (`:qw!`)
 
-```
-cat << EOF > project.toml
-[[build.env]]
-RAILS_MASTER_KEY="$(cat config/credentials/production.key)"
-EOF
-```
+This command created a `config/master.key` file which is the key to decrypt the
+generated `config/credentials.yml.enc` file.
 
-!!! Warning: You shouldn't commit your master key in git. We do this here because
-this application is just a demonstration on how Epinio works with Rails and we
-don't store any important secrets in the credentials file. You should add `project.toml`
-to `.gitignore` if you follow this guide to avoid checking the master key in git.
+!!! Warning: The file `config/master.key` should not be committed in git. You
+should put it in `.gitignore` (which we already did on this project).
+
+You will need the contents of the `master.key` file laters in this guide.
 
 ## Deploy
 
@@ -54,44 +44,36 @@ $ epinio enable services-incluster
 
 Provision a Mariadb service named "rails-database":
 ```
-$ epinio service create rails-database mariadb 10-3-22
+$ epinio service create mydb mariadb 10-3-22
 ```
+
+Create a new application on Epinio:
+```
+$ epinio apps create rails-example
+```
+
+Create an environment variable for RAILS_MASTER_KEY (https://edgeguides.rubyonrails.org/security.html#custom-credentials):
+
+```
+$ epinio apps env set rails-example RAILS_MASTER_KEY $(cat config/master.key)
+```
+
+(look at the output and make sure the value of the environment variable matches
+the contents of the `config/master.key` file.)
 
 Now push the rails application with Epinio and bind the new database service
 at the same time:
 
 ```
-$ epinio push rails-example -b rails-database
+$ epinio push rails-example -b mydb
 ```
 
+If everything works as expected, the application deployment should finish soon
+and the command should print the url of your app. Visit that in your browser
+and see the greeting message.
 
 
 ##  TODO:
 
 - cache image? (to make pushes faster)
-- RAILS_MASTER_KEY?
 - Ruby/rails/epinio/whatever versions?
-
-### Original Rails readme
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
