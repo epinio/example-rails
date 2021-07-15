@@ -1,6 +1,6 @@
 default: &default
-  adapter: mysql
-  encoding: utf8
+  adapter: mysql2
+  encoding: utf8mb4
   username: <%= File.read("/services/mydb/username") %>
   password: <%= File.read("/services/mydb/password") %>
   host: <%= File.read("/services/mydb/host") %>
