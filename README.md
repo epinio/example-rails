@@ -30,7 +30,7 @@ You will need the contents of the `master.key` file laters in this guide.
 ## Deploy
 
 You should already got a cluster with Epinio installed on it. Follow the
-[Epinio documentation](https://github.com/epinio/epinio/#quick-start) if you
+[Epinio documentation](https://github.com/epinio/epinio/blob/main/docs/user/tutorials/quickstart.md) if you
 need to do that first.
 
 Next step is to create a database for your Rails application. Let's use Epinio's
