@@ -33,23 +33,23 @@ You should already got a cluster with Epinio installed on it. Follow the
 [Epinio documentation](https://github.com/epinio/epinio/blob/main/docs/user/tutorials/quickstart.md) if you
 need to do that first.
 
-Next step is to create a database for your Rails application. Let's use Epinio's
-in-cluster services to provision an instance of Mariadb:
+Next step is to create a database for your Rails application. Let's use helm
+to deploy a postgresql database inside the cluster:
 
-
-Enable incluster services:
 ```
-$ epinio enable services-incluster
-```
-
-Provision a Mariadb service named "rails-database":
-```
-$ epinio service create mydb mariadb 10-3-22
+$ helm install postgres bitnami/postgresql --set volumePermissions.enabled=true,postgresqlUsername=myuser,postgresqlPassword=mypassword,postgresqlDatabase=production
 ```
 
 Create a new application on Epinio:
+
 ```
 $ epinio apps create rails-example
+```
+
+Create a service with Epinio to allow the application to access the database:
+
+```
+$ epinio service create-custom mydb username myuser password mypassword host postgres-postgresql.default.svc.cluster.local port 5432
 ```
 
 Create an environment variable for RAILS_MASTER_KEY (https://edgeguides.rubyonrails.org/security.html#custom-credentials):
@@ -75,5 +75,4 @@ and see the greeting message.
 
 ##  TODO:
 
-- cache image? (to make pushes faster)
 - Ruby/rails/epinio/whatever versions?
