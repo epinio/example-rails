@@ -1,11 +1,10 @@
 default: &default
-  adapter: mysql2
-  encoding: utf8mb4
+  adapter: postgresql
+  encoding: unicode
   username: <%= File.read("/services/mydb/username") %>
   password: <%= File.read("/services/mydb/password") %>
   host: <%= File.read("/services/mydb/host") %>
   port: <%= File.read("/services/mydb/port") %>
-  timeout: 5000
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
