@@ -65,7 +65,7 @@ Now push the rails application with Epinio and bind the new database service
 at the same time:
 
 ```
-$ epinio push rails-example -b mydb
+$ epinio push -n rails-example -b mydb
 ```
 
 If everything works as expected, the application deployment should finish soon
