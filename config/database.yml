@@ -1,10 +1,10 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: <%= File.read("/services/mydb/username") %>
-  password: <%= File.read("/services/mydb/password") %>
-  host: <%= File.read("/services/mydb/host") %>
-  port: <%= File.read("/services/mydb/port") %>
+  username: <%= File.read("/configurations/mydb/username") %>
+  password: <%= File.read("/configurations/mydb/password") %>
+  host: <%= File.read("/configurations/mydb/host") %>
+  port: <%= File.read("/configurations/mydb/port") %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
