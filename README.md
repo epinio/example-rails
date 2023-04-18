@@ -49,7 +49,7 @@ $ epinio apps create rails-example
 Create a service with Epinio to allow the application to access the database:
 
 ```
-$ epinio service create-custom mydb username myuser password mypassword host postgres-postgresql.default.svc.cluster.local port 5432
+$ epinio configuration create mydb username myuser password mypassword host postgres-postgresql.default.svc.cluster.local port 5432
 ```
 
 Create an environment variable for RAILS_MASTER_KEY (https://edgeguides.rubyonrails.org/security.html#custom-credentials):
