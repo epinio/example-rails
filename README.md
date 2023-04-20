@@ -33,11 +33,11 @@ You should already got a cluster with Epinio installed on it. Follow the
 [Epinio documentation](https://github.com/epinio/epinio/blob/main/docs/user/tutorials/quickstart.md) if you
 need to do that first.
 
-Next step is to create a database for your Rails application. Let's use helm
-to deploy a postgresql database inside the cluster:
+Next step is to create a database for your Rails application.
+Let's use Epinio services to deploy a postgresql database inside the cluster:
 
 ```
-$ helm install postgres bitnami/postgresql --set volumePermissions.enabled=true,postgresqlUsername=myuser,postgresqlPassword=mypassword,postgresqlDatabase=production
+$ epinio service create postgresql-dev mypostgres
 ```
 
 Create a new application on Epinio:
@@ -46,17 +46,37 @@ Create a new application on Epinio:
 $ epinio apps create rails-example
 ```
 
-Create a service with Epinio to allow the application to access the database:
+Bind the service to the application
 
 ```
-$ epinio configuration create mydb username myuser password mypassword host postgres-postgresql.default.svc.cluster.local port 5432
+$ epinio service bind mypostgres rails-example
+```
+
+Check the generated password in the created configuration
+
+```
+$ epinio configuration show x8eeaca2ad14ed8ab93e6a123ba20-postgresql
+```
+
+and the service internal endpoint
+
+```
+$ epinio service show mypostgres
+```
+
+Now use this values to setup the configuration:
+```
+$ epinio configuration create mydb username postgres password 4itJ3vwWpw host x8eeaca2ad14ed8ab93e6a123ba20-postgresql.workspace.svc.cluster.local port 5432
 ```
 
 Create an environment variable for RAILS_MASTER_KEY (https://edgeguides.rubyonrails.org/security.html#custom-credentials):
 
 ```
 $ epinio apps env set rails-example RAILS_MASTER_KEY $(cat config/master.key)
+$ epinio apps env set rails-example BP_NODE_VERSION '16.*'
 ```
+
+Note: we need to set the `BP_NODE_VERSION=16.*` to use a compatible Node version.
 
 (look at the output and make sure the value of the environment variable matches
 the contents of the `config/master.key` file.)
