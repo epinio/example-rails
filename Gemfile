@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.2'
+ruby '3.3.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 7.0.4'
 # Use pg as the database for Active Record
 gem 'pg', '~> 1.1'
+gem "concurrent-ruby", "< 1.3.5"
 
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
@@ -48,7 +49,7 @@ end
 group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 3.26'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '~> 4.11'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
 end
