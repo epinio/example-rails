@@ -1,1 +1,1 @@
-web: bundle exec rails db:prepare && bundle exec puma -C config/puma.rb --no-redirect-stdout --no-daemonize --no-control --pidfile /dev/null --state /dev/null
+web: bundle exec rails db:prepare && bundle exec puma -C config/puma.rb --pidfile /dev/null --state /dev/null --no-daemonize --no-control
