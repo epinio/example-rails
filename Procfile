@@ -1,1 +1,1 @@
-web: bundle exec rails db:prepare && bundle exec puma -t 5:5 -p ${PORT:-3000} -e production
+web: bundle exec rails db:prepare && bundle exec puma -C config/puma.rb --pidfile /dev/null --state /dev/null
