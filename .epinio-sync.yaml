@@ -1,0 +1,19 @@
+# .epinio-sync.yaml
+# app watch reads this file to decide how to sync local changes into the running pod.
+#
+# Run (app must already be pushed):
+#   epinio app watch rails-example --path .
+#
+# Ruby on Rails is interpreted, so this app uses files mode.
+# Do not set build_cmd or binary — those fields switch watch to binary mode
+# (used for compiled languages like Go or Java).
+#
+# On every save, watch uploads only the changed files into the pod and the
+# supervisor restarts the process so the new source is picked up.
+#
+# This app also needs a database and RAILS_MASTER_KEY at push time. Those are
+# unrelated to watch; see this repo's README for the service/env setup.
+
+# Directory inside the pod where source files are written.
+# This matches the default Paketo / Cloud Native Buildpacks layout.
+files_dest: "/workspace/source/app"
